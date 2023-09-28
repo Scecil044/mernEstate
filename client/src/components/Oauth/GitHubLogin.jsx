@@ -19,7 +19,7 @@ export default function GitHubLogin() {
         className="mt-1 w-full flex items-center justify-center gap-2 py-2 px-4 bg-neutral-700 text-white border-none hover:border-gray-400"
       >
         <img src="github.svg" alt="img" className="w-5 h-5" />
-        Continue with google
+        Continue with GitHub
       </button>
     </>
   );

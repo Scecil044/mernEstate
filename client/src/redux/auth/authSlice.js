@@ -21,9 +21,28 @@ export const authSlice = createSlice({
     loginRejectedState: (state, action) => {
       state.isLoading = false;
       state.isError = action.payload;
+    },
+    updatePendingState: state => {
+      state.isLoading = true;
+    },
+    updateFulfilledState: (state, action) => {
+      state.isLoading = false;
+      state.isError = false;
+      state.userInfo = action.payload;
+    },
+    updateRejectedState: (state, action) => {
+      state.isLoading = false;
+      state.isError = action.payload;
     }
   }
 });
 
-export const { loginPendingState, loginFulfilledState, loginRejectedState } = authSlice.actions;
+export const {
+  loginPendingState,
+  loginFulfilledState,
+  loginRejectedState,
+  updateFulfilledState,
+  updatePendingState,
+  updateRejectedState
+} = authSlice.actions;
 export default authSlice.reducer;

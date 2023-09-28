@@ -5,6 +5,7 @@ import Header from "./components/Header";
 import Profile from "./pages/Profile";
 import Register from "./pages/Register";
 import About from "./pages/About";
+import Layout from "./components/Layout";
 
 export default function App() {
   return (
@@ -15,7 +16,9 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/profile" element={<Profile />} />
+          <Route element={<Layout />}>
+            <Route path="/profile" element={<Profile />} />
+          </Route>
           <Route path="/about" element={<About />} />
         </Routes>
       </BrowserRouter>
