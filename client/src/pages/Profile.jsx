@@ -224,12 +224,15 @@ export default function Profile() {
             )}
             Update
           </button>
-          <button className="flex items-center justify-center gap-1 py-2 px-4 w-full bg-green-600 text-white hover:bg-green-500 hover:shadow-md transition-colors duration-100">
+          <Link
+            to="/create-listing"
+            className="flex items-center justify-center gap-1 py-2 px-4 w-full bg-green-700 text-white hover:bg-green-500 hover:shadow-md transition-colors duration-100 hover:opacity-95"
+          >
             {isLoading && (
               <div className="rounded-full border-white animate-spin w-5 h-5 border-t-2 border-r-2"></div>
             )}
             Create a New Listing
-          </button>
+          </Link>
         </div>
         <div className="flex items-center justify-between mt-1">
           <Link onClick={deleteAccount} className="text-red-600">

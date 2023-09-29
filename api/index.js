@@ -4,6 +4,7 @@ import colors from "colors";
 import mongoose from "mongoose";
 import authRouter from "./routes/authRoutes.js";
 import userRouter from "./routes/userRoutes.js";
+import listingRouter from "./routes/listingRoutes.js";
 import cookieParser from "cookie-parser";
 
 dotenv.config();
@@ -24,6 +25,7 @@ const port = process.env.PORT || 3000;
 //Routes
 app.use("/api/auth", authRouter);
 app.use("/api/users", userRouter);
+app.use("/api/listings", listingRouter);
 
 //error middleware
 app.use((err, req, res, next) => {

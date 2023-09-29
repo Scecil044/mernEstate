@@ -101,7 +101,7 @@ export default function Register() {
           <div className="mb-3">
             <button
               disabled={isLoading}
-              className={`flex items-center justify-center gap-2 border-none hover:border-gray-300 py-2 px-4 bg-indigo-800 text-white rounded-md w-full active:bg-indigo-700 ${
+              className={`flex items-center justify-center gap-2 border-none hover:border-gray-300 py-2 px-4 bg-neutral-800 text-white rounded-md w-full active:bg-indigo-700 ${
                 isLoading ? "disabled:opacity-90 cursor-not-allowed" : ""
               }`}
             >

@@ -11,7 +11,7 @@ import {
 
 export default function Login() {
   const dispatch = useDispatch();
-  const {isError, isLoading } = useSelector((state) => state.auth);
+  const { isError, isLoading } = useSelector((state) => state.auth);
   const navigate = useNavigate();
   const [formData, setFormData] = useState({});
 
@@ -46,6 +46,11 @@ export default function Login() {
           onSubmit={handleSubmit}
           className="w-[400px] mx-auto bg-white p-5 shadow-lg "
         >
+          <img
+            src="https://w7.pngwing.com/pngs/729/68/png-transparent-gray-and-white-eagle-illustration-logo-eagle-eagle-logo-free-emblem-animals-bald-eagle.png"
+            alt="logo"
+            className="w-16 h-16 mx-auto"
+          />
           <h3 className="font-semibold text-center mb-4 text-xl">
             Login to your account
           </h3>
@@ -71,7 +76,7 @@ export default function Login() {
             <button
               type="submit"
               disabled={isLoading}
-              className={`flex items-center justify-center gap-2 border-none hover:border-gray-300 py-2 px-4 bg-indigo-800 text-white rounded-md w-full ${
+              className={`flex items-center justify-center gap-2 border-none hover:border-gray-300 py-2 px-4 bg-neutral-800 text-white rounded-md w-full ${
                 isLoading ? "bg-indigo-7oo cursor-not-allowed" : ""
               }`}
             >
@@ -79,7 +84,6 @@ export default function Login() {
             </button>
             <div className="flex flex-col-reverse md:flex-col gap-1">
               <GoogleLogin />
-              <GitHubLogin />
             </div>
           </div>
           <div className="flex items-center gap-2 text-sm">

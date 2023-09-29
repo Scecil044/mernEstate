@@ -6,6 +6,7 @@ import Profile from "./pages/Profile";
 import Register from "./pages/Register";
 import About from "./pages/About";
 import Layout from "./components/Layout";
+import CreateListing from "./pages/createListing";
 
 export default function App() {
   return (
@@ -18,6 +19,7 @@ export default function App() {
           <Route path="/register" element={<Register />} />
           <Route element={<Layout />}>
             <Route path="/profile" element={<Profile />} />
+            <Route path="/create-listing" element={<CreateListing />} />
           </Route>
           <Route path="/about" element={<About />} />
         </Routes>
