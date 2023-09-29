@@ -9,10 +9,16 @@ import {
 } from "firebase/storage";
 import { app } from "../firebase";
 import {
-  loginRejectedState,
   updateFulfilledState,
   updatePendingState,
   updateRejectedState,
+  logoutFulfilledState,
+  logoutPendingState,
+  logoutRejectedState,
+  deleteAccountFulfilledState,
+  deleteAccountPendingState,
+  deleteAccountRejectedState,
+  loginPendingState,
 } from "../redux/auth/authSlice";
 
 export default function Profile() {
@@ -23,31 +29,69 @@ export default function Profile() {
   const [image, setImage] = useState(null);
   const [uploadPercentage, setUploadPercentage] = useState(0);
   const [uploadError, setUploadError] = useState(false);
+  const [updateSuccess, setUpdateSuccess] = useState(false);
 
+  //function to handle form data
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
   };
-
+  //function to update user details
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      dispatch(updatePendingState);
-      const res = await fetch("/api/users/update", {
-        method: "POST",
+      dispatch(updatePendingState());
+      const res = await fetch("/api/users/update/" + userInfo._id, {
+        method: "PUT",
         headers: { "content-type": "application/json" },
         body: JSON.stringify(formData),
       });
-      const data = res.json();
+      const data = await res.json();
       if (data.success === false) {
-        dispatch(loginRejectedState(data.message));
+        dispatch(updateRejectedState(data.message));
+        return;
       }
+      console.log(data);
       dispatch(updateFulfilledState(data));
+      setUpdateSuccess(true);
     } catch (error) {
       dispatch(updateRejectedState(error.message));
       console.log(error);
     }
   };
 
+  //function to logout user
+  const logoutUser = async () => {
+    try {
+      dispatch(logoutPendingState());
+      const res = await fetch("/api/users/logout");
+      const data = res.json();
+      if (data.success === false) {
+        dispatch(logoutRejectedState(data.message));
+      }
+      dispatch(logoutFulfilledState(data));
+    } catch (error) {
+      dispatch(logoutRejectedState(error.message));
+      console.log(error);
+    }
+  };
+  //function to delete user
+  const deleteAccount = async () => {
+    try {
+      dispatch(deleteAccountPendingState());
+      const res = await fetch("/api/users/delete/" + userInfo._id, {
+        method: "DELETE",
+      });
+      const data = res.json();
+      if (data.success === false) {
+        dispatch(deleteAccountRejectedState(data.message));
+      }
+      dispatch(deleteAccountFulfilledState(data));
+    } catch (error) {
+      dispatch(logoutRejectedState(error.message));
+      console.log(error);
+    }
+  };
+  //function to handle selected image
   const handleImage = (image) => {
     const storage = getStorage(app);
     const fileName = new Date().getTime() + image.name;
@@ -71,6 +115,7 @@ export default function Profile() {
       }
     );
   };
+  //Use Effect hoock checks if the image changes to initiate upload
   useEffect(() => {
     if (image) {
       handleImage(image);
@@ -179,7 +224,7 @@ export default function Profile() {
             )}
             Update
           </button>
-          <button className="flex items justify-center py-2 px-4 w-full bg-green-600 text-white hover:bg-green-500 hover:shadow-md transition-colors duration-100">
+          <button className="flex items-center justify-center gap-1 py-2 px-4 w-full bg-green-600 text-white hover:bg-green-500 hover:shadow-md transition-colors duration-100">
             {isLoading && (
               <div className="rounded-full border-white animate-spin w-5 h-5 border-t-2 border-r-2"></div>
             )}
@@ -187,8 +232,20 @@ export default function Profile() {
           </button>
         </div>
         <div className="flex items-center justify-between mt-1">
-          <Link className="text-red-600">Delete Account</Link>
-          <Link className="text-red-500">Logout</Link>
+          <Link onClick={deleteAccount} className="text-red-600">
+            Delete Account
+          </Link>
+          <Link onClick={logoutUser} className="text-red-500">
+            Logout
+          </Link>
+        </div>
+        <div>
+          <span>
+            {isError ? <p className="text-red-500 text-sm">{isError}</p> : ""}
+          </span>
+          <span className="text-sm text-green-500">
+            {updateSuccess ? "Details updated" : ""}
+          </span>
         </div>
       </form>
     </>

@@ -4,6 +4,7 @@ import colors from "colors";
 import mongoose from "mongoose";
 import authRouter from "./routes/authRoutes.js";
 import userRouter from "./routes/userRoutes.js";
+import cookieParser from "cookie-parser";
 
 dotenv.config();
 mongoose
@@ -15,9 +16,11 @@ mongoose
     console.log(error);
   });
 const app = express();
+app.use(express.json());
+app.use(cookieParser());
 
 const port = process.env.PORT || 3000;
-app.use(express.json());
+
 //Routes
 app.use("/api/auth", authRouter);
 app.use("/api/users", userRouter);

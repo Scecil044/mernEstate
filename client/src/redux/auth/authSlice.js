@@ -27,10 +27,34 @@ export const authSlice = createSlice({
     },
     updateFulfilledState: (state, action) => {
       state.isLoading = false;
-      state.isError = false;
+      state.isError = null;
       state.userInfo = action.payload;
     },
     updateRejectedState: (state, action) => {
+      state.isLoading = false;
+      state.isError = action.payload;
+    },
+    logoutPendingState: state => {
+      state.isLoading = true;
+    },
+    logoutFulfilledState: state => {
+      state.isLoading = false;
+      state.isError = null;
+      state.userInfo = null;
+    },
+    logoutRejectedState: (state, action) => {
+      state.isLoading = false;
+      state.isError = action.payload;
+    },
+    deleteAccountPendingState: state => {
+      state.isLoading = true;
+    },
+    deleteAccountFulfilledState: state => {
+      state.isLoading = false;
+      state.isError = null;
+      state.userInfo = null;
+    },
+    deleteAccountRejectedState: (state, action) => {
       state.isLoading = false;
       state.isError = action.payload;
     }
@@ -43,6 +67,12 @@ export const {
   loginRejectedState,
   updateFulfilledState,
   updatePendingState,
-  updateRejectedState
+  updateRejectedState,
+  deleteAccountFulfilledState,
+  deleteAccountPendingState,
+  deleteAccountRejectedState,
+  logoutFulfilledState,
+  logoutPendingState,
+  logoutRejectedState
 } = authSlice.actions;
 export default authSlice.reducer;
