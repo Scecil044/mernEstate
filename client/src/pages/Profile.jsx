@@ -24,12 +24,15 @@ import {
 export default function Profile() {
   const dispatch = useDispatch();
   const { userInfo, isLoading, isError } = useSelector((state) => state.auth);
+
   const fileRef = useRef();
   const [formData, setFormData] = useState({});
   const [image, setImage] = useState(null);
   const [uploadPercentage, setUploadPercentage] = useState(0);
   const [uploadError, setUploadError] = useState(false);
   const [updateSuccess, setUpdateSuccess] = useState(false);
+  const [listingError, setListingError] = useState(false);
+  const [userListings, setUserListings] = useState([]);
 
   //function to handle form data
   const handleChange = (e) => {
@@ -115,7 +118,41 @@ export default function Profile() {
       }
     );
   };
-  //Use Effect hoock checks if the image changes to initiate upload
+  //function to get user listings
+  const handleShowListings = async () => {
+    try {
+      setListingError(false);
+      const res = await fetch("/api/listing/my-listings/" + userInfo._id);
+      const data = await res.json();
+      if (data.success === false) {
+        setListingError(true);
+      }
+      setUserListings(data);
+    } catch (error) {
+      console.log(error);
+      setListingError(true);
+    }
+  };
+
+  //function to delete listing
+  const handleListingDelete = async (listingId) => {
+    try {
+      const res = await fetch("/api/listing/delete/" + listingId, {
+        method: "DELETE",
+      });
+      const data = res.json();
+      if (data.success === false) {
+        console.log(data.message);
+        return;
+      }
+      setUserListings((prev) =>
+        prev.filter((listing) => listing._id !== listingId)
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  //Use Effect hook checks if the image changes to initiate upload
   useEffect(() => {
     if (image) {
       handleImage(image);
@@ -218,7 +255,7 @@ export default function Profile() {
           </div>
         </div>
         <div className="flex flex-col gap-2">
-          <button className=" flex items-center justify-center gap-2 py-2 px-4 w-full bg-blue-600 text-white hover:bg-blue-500 hover:shadow-md transition-colors duration-100">
+          <button className=" flex items-center justify-center gap-2 py-2 px-4 w-full bg-neutral-600 text-white hover:bg-neutral-900 hover:shadow-md transition-colors duration-100 uppercase">
             {isLoading && (
               <div className="rounded-full border-white animate-spin w-5 h-5 border-t-2 border-r-2"></div>
             )}
@@ -249,6 +286,46 @@ export default function Profile() {
           <span className="text-sm text-green-500">
             {updateSuccess ? "Details updated" : ""}
           </span>
+          <button
+            type="button"
+            onClick={handleShowListings}
+            className="text-green-700 w-full"
+          >
+            Show Listings
+          </button>
+          {/* listings */}
+          {userListings &&
+            userListings.length > 0 &&
+            userListings.map((listing, index) => (
+              <div
+                key={index}
+                className="p-3 border flex items-center justify-between gap-4"
+              >
+                <Link to={`/listing/${listing._id}`}>
+                  <img
+                    src={listing.imageURLs[0]}
+                    alt="listing image"
+                    className="w-16 h-16 object-contain"
+                  />
+                </Link>
+                <Link
+                  to={`/listing/${listing._id}`}
+                  className="flex-1 truncate hover:underline font-semibold"
+                >
+                  <p>{listing.name}</p>
+                </Link>
+                <div className="flex flex-col">
+                  <button
+                    type="button"
+                    onClick={() => handleListingDelete(listing._id)}
+                    className="text-red-500"
+                  >
+                    Delete
+                  </button>
+                  <button className="text-green-500">Edit</button>
+                </div>
+              </div>
+            ))}
         </div>
       </form>
     </>
