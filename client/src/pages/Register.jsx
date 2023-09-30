@@ -1,8 +1,9 @@
 import { useState } from "react";
 import GoogleLogin from "../components/Oauth/GoogleLogin";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Register() {
+  const navigate = useNavigate();
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(null);
   const handleChange = (e) => {
@@ -26,6 +27,7 @@ export default function Register() {
         return;
       }
       setIsLoading(false);
+      navigate("/login");
       console.log(data);
     } catch (error) {
       setError(error.message);

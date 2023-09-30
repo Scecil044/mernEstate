@@ -25,7 +25,7 @@ const port = process.env.PORT || 3000;
 //Routes
 app.use("/api/auth", authRouter);
 app.use("/api/users", userRouter);
-app.use("/api/listings", listingRouter);
+app.use("/api/listing", listingRouter);
 
 //error middleware
 app.use((err, req, res, next) => {
