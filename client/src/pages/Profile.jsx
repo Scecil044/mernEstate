@@ -289,7 +289,7 @@ export default function Profile() {
           <button
             type="button"
             onClick={handleShowListings}
-            className="text-green-700 w-full"
+            className="text-green-700 w-full motion-safe:animate-bounce"
           >
             Show Listings
           </button>

@@ -55,7 +55,7 @@ export const editListing = async (req, res, next) => {
 
 export const getListing = async (req, res, next) => {
   try {
-    const listing = await Listing.findById(req.params.id);
+    const listing = await Listing.findById(req.params.id).populate("userRef");
     if (!listing) return next(errorHandler(400, "Listing not found"));
     res.status(200).json(listing);
   } catch (error) {
