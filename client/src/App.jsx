@@ -9,6 +9,7 @@ import Layout from "./components/Layout";
 import CreateListing from "./pages/createListing";
 import EditListing from "./pages/EditListing";
 import Listing from "./pages/Listing";
+import Search from "./pages/Search";
 
 export default function App() {
   return (
@@ -28,6 +29,7 @@ export default function App() {
             />
           </Route>
           <Route path="/about" element={<About />} />
+          <Route path="/search" element={<Search />} />
           <Route path="/listing/:listingId" element={<Listing />} />
         </Routes>
       </BrowserRouter>
