@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import LoadingSpinner from "../components/LoadingSpinner";
+import ListingCard from "../components/ListingCard";
 
 export default function Search() {
   const navigate = useNavigate();
@@ -84,7 +86,7 @@ export default function Search() {
       }
 
       const fetchListings = async () => {
-        setIsLoading(false);
+        setIsLoading(true);
         const searchQuery = urlParams.toString();
         const res = await fetch(`/api/listing/get?${searchQuery}`);
         const data = await res.json();
@@ -159,7 +161,18 @@ export default function Search() {
         </div>
         <button className="bg-slate-700 py-2 px-4 text-white uppercase text-center mt-3 hover:opacity-90">Submit</button>
       </form>
-      <div className="flex-1 p-5">two</div>
+      <div className="flex-1 p-5">
+        <h1 className="font-semibold text-2xl">Listings</h1>
+        <div className="flex flex-col gap-3 md:grid md:grid-cols-2 md:gap-2">
+          {!isLoading && listings.length === 0 && <p>No listing found!</p>}
+          {isLoading && (
+            <div className="h-full w-full flex items-center justify-center">
+              <p>Loading...</p>
+            </div>
+          )}
+          {!isLoading && listings && listings.map(listing => <ListingCard key={listing._id} listing={listing} />)}
+        </div>
+      </div>
     </div>
   );
 }
