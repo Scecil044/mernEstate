@@ -19,6 +19,6 @@ router.get("/my-listings/:id", verifyUser, getUserListings);
 router.delete("/delete/:id", verifyUser, deleteListing);
 router.put("/update/:id", verifyUser, editListing);
 router.get("/get-listing/:id", verifyUser, getListing);
-router.get("/", getListings);
+router.get("/get", getListings);
 
 export default router;
