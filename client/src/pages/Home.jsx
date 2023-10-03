@@ -90,7 +90,7 @@ export default function Home() {
                 Show more
               </Link>
             </div>
-            <div className="grid grid-cols-4 gap-5">
+            <div className="flex flex-col gap-3 md:grid md:grid-cols-4 md:gap-5">
               {offerListings.map(listing => (
                 <ListingCard key={listing._id} listing={listing} />
               ))}
@@ -106,7 +106,7 @@ export default function Home() {
                 Show more places for rent
               </Link>
             </div>
-            <div className="grid grid-cols-4 gap-5">
+            <div className="flex flex-col gap-3 md:grid md:grid-cols-4 md:gap-5">
               {rentListings.map(listing => (
                 <ListingCard key={listing._id} listing={listing} />
               ))}
@@ -122,7 +122,7 @@ export default function Home() {
                 Show more places for sale
               </Link>
             </div>
-            <div className="grid grid-cols-4 gap-5">
+            <div className="flex flex-col gap-3 md:grid md:grid-cols-4 md:gap-5">
               {saleListings.map(listing => (
                 <ListingCard key={listing._id} listing={listing} />
               ))}
