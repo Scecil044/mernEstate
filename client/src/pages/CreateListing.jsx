@@ -4,7 +4,7 @@ import { app } from "../firebase";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-export default function createListing() {
+export default function CreateListing() {
   //Get user data
   const { userInfo } = useSelector(state => state.auth);
   const navigate = useNavigate();
