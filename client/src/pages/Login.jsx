@@ -3,30 +3,26 @@ import GoogleLogin from "../components/Oauth/GoogleLogin";
 import GitHubLogin from "../components/Oauth/GitHubLogin";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  loginPendingState,
-  loginFulfilledState,
-  loginRejectedState,
-} from "../redux/auth/authSlice";
+import { loginPendingState, loginFulfilledState, loginRejectedState } from "../redux/auth/authSlice";
 
 export default function Login() {
   const dispatch = useDispatch();
-  const { isError, isLoading } = useSelector((state) => state.auth);
+  const { isError, isLoading } = useSelector(state => state.auth);
   const navigate = useNavigate();
   const [formData, setFormData] = useState({});
 
-  const handleChange = (e) => {
+  const handleChange = e => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
     try {
       dispatch(loginPendingState);
       const res = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(formData)
       });
       const data = await res.json();
       if (data.success === false) {
@@ -42,18 +38,8 @@ export default function Login() {
   return (
     <>
       <div className="flex flex-col items-center h-screen justify-center px-8 py-5">
-        <form
-          onSubmit={handleSubmit}
-          className="w-[400px] mx-auto bg-white p-5 shadow-lg "
-        >
-          <img
-            src="https://w7.pngwing.com/pngs/729/68/png-transparent-gray-and-white-eagle-illustration-logo-eagle-eagle-logo-free-emblem-animals-bald-eagle.png"
-            alt="logo"
-            className="w-16 h-16 mx-auto"
-          />
-          <h3 className="font-semibold text-center mb-4 text-xl">
-            Login to your account
-          </h3>
+        <form onSubmit={handleSubmit} className="w-[400px] mx-auto bg-white p-5 shadow-lg ">
+          <h3 className="font-semibold text-center mb-4 text-xl">Login to your account</h3>
           <div className="mb-3">
             <input
               type="email"
@@ -92,9 +78,7 @@ export default function Login() {
               Sign up
             </Link>
           </div>
-          <div>
-            {isError ? <p className="text-red-500 text-sm">{isError}</p> : ""}
-          </div>
+          <div>{isError ? <p className="text-red-500 text-sm">{isError}</p> : ""}</div>
         </form>
       </div>
     </>
