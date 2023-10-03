@@ -16,6 +16,7 @@ export default function Search() {
     sort: "Created_at",
     order: "desc"
   });
+  const [showMore, setShowMore] = useState(false);
 
   const handleChange = e => {
     if (e.target.id === "all" || e.target.id === "rent" || e.target.id === "offer" || e.target.id === "sale") {
@@ -54,6 +55,23 @@ export default function Search() {
     navigate("/search?" + searchQuery);
   };
 
+  const handleShowMore = async () => {
+    setShowMore(false);
+    const numberOfListings = listings.length;
+    const startIndex = numberOfListings;
+    const urlParams = new URLSearchParams(location.search);
+    urlParams.set("startIndex", startIndex);
+    const searchQuery = urlParams.toString();
+
+    const res = await fetch(`/api/listing/get?${searchQuery}`);
+    const data = await res.json();
+    if (data.length < 8) {
+      setShowMore(true);
+    } else {
+      setShowMore(true);
+    }
+    setListings({ ...listings, data });
+  };
   useEffect(
     () => {
       const urlParams = new URLSearchParams(location.search);
@@ -92,6 +110,9 @@ export default function Search() {
         const data = await res.json();
         setListings(data);
         setIsLoading(false);
+        if (data.length > 9) {
+          setShowMore(true);
+        }
       };
       fetchListings();
     },
@@ -172,6 +193,14 @@ export default function Search() {
           )}
           {!isLoading && listings && listings.map(listing => <ListingCard key={listing._id} listing={listing} />)}
         </div>
+        {showMore && (
+          <button
+            onClick={handleShowMore}
+            className="text-green-700 w-full text-center mt-3 hover:text-green-500 hover:font-semibold py-2 px-4"
+          >
+            Sow more
+          </button>
+        )}
       </div>
     </div>
   );
